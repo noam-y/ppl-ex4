@@ -50,22 +50,11 @@
 ; Type: [List * List * [List -> T]] -> T
 ; Purpose: Returns the concatination of the given two lists, with cont pre-processing
 (define append$
-  (lambda (lst1 lst2 cont)
-    (if (empty? x)
-    (cont y)
-    ((car x)(lambda (car_res) 
-    ((append$ (cdr x))) (lambda (append_cdr_res)
-    ((cont (cons append_cdr_res car_res)))))))
-  )
-)
-
-;;; Q3.2
-; Signature: equal-trees$(tree1, tree2, succ, fail) 
-; Type: [Tree * Tree * [Tree ->T1] * [Pair->T2] -> T1 U T2
-; Purpose: Determines the structure identity of a given two lists, with post-processing succ/fail
-(define equal-trees$ 
-  (lambda (tree1 tree2 succ fail)
-    #f ;@TODO
+  (lambda (lst1 lst2 cont) 
+  (if (empty? lst1) 
+  (cont lst2)
+  (append$ (cdr lst1) lst2
+  (lambda (cdr_res) (cont (cons (car lst1) cdr_res)))))
   )
 )
 
@@ -79,7 +68,7 @@
 ;; constant real number
 (define as-real
   (lambda (x)
-    #f ;@TODO
+    (cons-lzl x (lambda () (as-real(x))))
   )
 )
 
@@ -89,7 +78,7 @@
 ;; Purpose: Addition of real numbers
 (define ++
   (lambda (x y)
-    #f ;@TODO
+    (cons-lzl (+ (head x) (head y) ) (lambda () (++ x y)))
   )
 )
 
@@ -151,3 +140,4 @@
     #f ;@TODO
   )
 )
+
