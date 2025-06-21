@@ -68,7 +68,7 @@
 ;; constant real number
 (define as-real
   (lambda (x)
-    (cons-lzl x (lambda () (as-real(x))))
+    (cons-lzl x (lambda () (as-real x)))
   )
 )
 
@@ -78,7 +78,7 @@
 ;; Purpose: Addition of real numbers
 (define ++
   (lambda (x y)
-    (cons-lzl (+ (head x) (head y) ) (lambda () (++ x y)))
+    (cons-lzl (+ (head x) (head y) ) (lambda () (++ (tail x) (tail y))))
   )
 )
 
@@ -87,7 +87,7 @@
 ;; Purpose: Subtraction of real numbers
 (define --
   (lambda (x y)
-    #f ;@TODO
+    (cons-lzl (- (head x) (head y)) (lambda () (-- (tail x) (tail y))))
   )
 )
 
@@ -96,15 +96,16 @@
 ;; Purpose: Multiplication of real numbers
 (define **
   (lambda (x y)
-    #f ;@TODO
+  (cons-lzl (* (head x) (head y)) (lambda () (** (tail x)(tail y))))
   )
 )
+
 ;; Signature: //(x, y)
 ;; Type: [ Lzl(Number) * Lzl(Number) -> Lzl(Number) ]
 ;; Purpose: Division of real numbers
 (define //
   (lambda (x y)
-    #f ;@TODO
+    (cons-lzl (/ (head x) (head y)) (lambda () (// (tail x) (tail y))))
   )
 )
 
@@ -116,9 +117,20 @@
 ;; square root of `x`
 (define sqrt-with
   (lambda (x y)
-    #f ;@TODO
+    (cons-lzl y (lambda ()(sqrt-with x (// (++(** y y) x) (** (as-real 2) y)))))
   )
 )
+
+
+;;(define sqrt-with
+;;  (lambda (x y)
+;;    (define yn (head y))
+;;    (define xn (head x))
+;;    (define newval (/ (+(* yn yn) xn) (* 2 yn)))
+;;    (cons-lzl (as-real newval) (lambda () (sqrt-with (tail x) (tail y) )))
+;;  )
+;;)
+
 
 ;;; Q4.2.b
 ;; Signature: diag(lzl)
@@ -126,9 +138,9 @@
 ;; Purpose: Diagonalize an infinite lazy list
 (define diag
   (lambda (lzl)
-    #f ;@TODO
-  )
-)
+  (cons-lzl (head (head lzl))
+  (lambda () (diag (tail (tail lzl) )))
+)))
 
 ;;; Q4.2.c
 ;; Signature: rsqrt(x)

@@ -4,6 +4,12 @@
 
 (define id (lambda (x) x))
 
+;; Q1a
+(check-equal? (append$ '(1 2) '(3 4) id) '(1 2 3 4) "incorrect append$ 1")
+(check-equal? (append$ '() '(3 4) id)  '(3 4) "incorrect append$ 2")
+(check-equal? (append$ '() '() id)  '() "incorrect append$ 3")
+
+
 
 ;;; Q2.1
 (check-equal? (take (as-real 4) 8) '(4 4 4 4 4 4 4 4) "incorrect as-real 1")
