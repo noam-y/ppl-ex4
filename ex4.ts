@@ -1,14 +1,20 @@
+import { resolve } from "path";
+
 //Q1
 export function all<T>(promises : Array<Promise<T>>) : Promise<Array<T>> {
-  // const promArr = promises.reduce((acc, promise) => {
-  //   promise.then(value => {[...acc, value]})
-  //   .catch(error => {
-  //     throw new Error(`Promise failed with error: ${error}`);
-  //   });
-  // },[])
-  return new Promise<T[]>( (resolve, reject) => {
-    resolve([]);
-    //TODO
+  return new Promise<T[]>((resolve, reject) => {
+  let resolvedCount = 0;
+  let results: T[] = new Array(promises.length);
+  for (let i = 0; i < promises.length; i++) {
+    promises[i].then(value => {
+      results[i] = value;
+      resolvedCount++;
+      if (resolvedCount === promises.length) {
+        // each time we finish resolving, we check if we can finish
+        resolve(results);
+      }
+    }).catch(reject);
+  }
   });
 }
 
@@ -44,5 +50,5 @@ export function fibBinet(n: number): number {
   const psi = (1 - sqrt5) / 2;
 
   const result = (Math.pow(phi, n) - Math.pow(psi, n)) / sqrt5;
-  return Math.round(result); // עיגול לתוצאה הקרובה כי מדובר במספר עשרוני
+  return Math.round(result); 
 }

@@ -59,7 +59,6 @@
 )
 
 
-
 ;;; Q4.1
 
 ;; Signature: as-real(x)
@@ -109,27 +108,12 @@
   )
 )
 
-;;; Q4.2.a
-;; Signature: sqrt-with(x y)
-;; Type: [ Lzl(Number) * Lzl(Number) -> Lzl(Lzl(Number)) ]
-;; Purpose: Using an initial approximation `y`, return a 
-;; sequence of real numbers which converges into the 
-;; square root of `x`
 (define sqrt-with
   (lambda (x y)
     (cons-lzl y (lambda ()(sqrt-with x (// (++(** y y) x) (** (as-real 2) y)))))
   )
 )
 
-
-;;(define sqrt-with
-;;  (lambda (x y)
-;;    (define yn (head y))
-;;    (define xn (head x))
-;;    (define newval (/ (+(* yn yn) xn) (* 2 yn)))
-;;    (cons-lzl (as-real newval) (lambda () (sqrt-with (tail x) (tail y) )))
-;;  )
-;;)
 
 
 ;;; Q4.2.b
@@ -145,7 +129,7 @@
 ;;; Q4.2.c
 ;; Signature: rsqrt(x)
 ;; Type: [ Lzl(Number) -> Lzl(Number) ]
-;; Purpose: Take a real number and return its square root
+;; Pose: Take a real number and return its square root
 ;; Example: (take (rsqrt (as-real 4.0)) 6) => '(4.0 2.5 2.05 2.0006097560975613 2.0000000929222947 2.000000000000002)
 (define rsqrt
   (lambda (x)
