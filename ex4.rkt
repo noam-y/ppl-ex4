@@ -114,17 +114,17 @@
   )
 )
 
-
-
 ;;; Q4.2.b
 ;; Signature: diag(lzl)
 ;; Type: [ Lzl(Lzl(T)) -> Lzl(T) ]
 ;; Purpose: Diagonalize an infinite lazy list
 (define diag
   (lambda (lzl)
-  (cons-lzl (head (head lzl))
-  (lambda () (diag (tail (tail lzl) )))
+  (cons-lzl ((nth lzl 0))
+            (lambda () (diag (map-lzl tail (tail lzl))))
 )))
+
+
 
 ;;; Q4.2.c
 ;; Signature: rsqrt(x)
@@ -133,7 +133,7 @@
 ;; Example: (take (rsqrt (as-real 4.0)) 6) => '(4.0 2.5 2.05 2.0006097560975613 2.0000000929222947 2.000000000000002)
 (define rsqrt
   (lambda (x)
-    #f ;@TODO
+    (diag (sqrt-with x x))
   )
 )
 
