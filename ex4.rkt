@@ -76,14 +76,15 @@
     [(or (not (pair? tree1)) (not (pair? tree2)))
     (fail (cons tree1 tree2))]
     
-    
     [else
        (equal-trees$ (left-subtree tree1) (left-subtree tree2)
          (lambda (left)
            (equal-trees$ (rest-subtree tree1) (rest-subtree tree2)
              (lambda (right) (succ (add-subtree left right)))
              fail))
-         fail)])))
+         fail)]
+    
+    )))
 
 
 ;;; Q4.1
