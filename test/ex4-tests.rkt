@@ -9,6 +9,12 @@
 (check-equal? (append$ '() '(3 4) id)  '(3 4) "incorrect append$ 2")
 (check-equal? (append$ '() '() id)  '() "incorrect append$ 3")
 
+;; Q1b
+(check-equal? (equal-trees$ '(1 (2) (3 9)) '(7 (2) (3 5)) id id) '((1 . 7) ((2 . 2)) ((3 . 3) (9 . 5))) "incorrect equal-trees$ 1")
+(check-equal? (equal-trees$ '(1 (2) (3 9)) '(1 (2) (3 9)) id id) '((1 . 1) ((2 . 2)) ((3 . 3) (9 . 9))) "incorrect equal-trees$ 2")
+(check-equal? (equal-trees$ '(1 2 (3 9)) '(1 (2) (3 9)) id id) '(2 2) "incorrect equal-trees$ 3")
+(check-equal? (equal-trees$ '(1 2 (3 9)) '(1 (3 4)) id id) '(2 3 4) "incorrect equal-trees$ 4")
+(check-equal? (equal-trees$ '(1 (2) ((4 5))) '(1 (#t) ((4 5))) id id) '((1 . 1) ((2 . #t)) (((4 . 4) (5 . 5)))) "incorrect equal-trees$ 5")
 
 
 ;;; Q2.1
