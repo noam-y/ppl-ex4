@@ -71,7 +71,7 @@
     (if (empty? tree2) (succ '()) (fail (cons tree1 tree2)))]
 
     [(and (not (pair? tree1)) (not (pair? tree2)))
-    (succ (add-subtree tree1 tree2))]
+    (succ (cons tree1 tree2))]
 
     [(or (not (pair? tree1)) (not (pair? tree2)))
     (fail (cons tree1 tree2))]
@@ -132,6 +132,35 @@
 (define //
   (lambda (x y)
     (cons-lzl (/ (head x) (head y)) (lambda () (// (tail x) (tail y))))
+  )
+)
+
+(define sqrt-with
+  (lambda (x y)
+    (cons-lzl y (lambda ()(sqrt-with x (// (++(** y y) x) (** (as-real 2) y)))))
+  )
+)
+
+;;; Q4.2.b
+;; Signature: diag(lzl)
+;; Type: [ Lzl(Lzl(T)) -> Lzl(T) ]
+;; Purpose: Diagonalize an infinite lazy list
+(define diag
+  (lambda (lzl)
+  (cons-lzl (head (head lzl))
+            (lambda () (diag (map-lzl tail (tail lzl))))
+)))
+
+
+
+;;; Q4.2.c
+;; Signature: rsqrt(x)
+;; Type: [ Lzl(Number) -> Lzl(Number) ]
+;; Pose: Take a real number and return its square root
+;; Example: (take (rsqrt (as-real 4.0)) 6) => '(4.0 2.5 2.05 2.0006097560975613 2.0000000929222947 2.000000000000002)
+(define rsqrt
+  (lambda (x)
+    (diag (sqrt-with x x))
   )
 )
 
