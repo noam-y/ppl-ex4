@@ -40,15 +40,17 @@ book(the_lord_of_the_rings, t, f, s(s(s(s(s(s(zero))))))).
 % You can add more facts.
 
 
+% Signature: checkleq(X, Y)/2
+% Purpose: true if X >= Y
+checkleq(_,zero).
+checkleq(s(X), s(Y)) :- checkleq(X, Y).
+
 % Signature: max_list(Lst, Max)/2
 % Purpose: true if Max is the maximum church number in Lst, false if Lst is emoty.
-checkleq(zero,Y).
-checkleq(s(X), s(Y)) :- leq(X, Y).
-
-max_list([], false).
+max_list([], Max).
 max_list([H|T], Max) :-
         max_list(T, Max),
-        checkleq(H, Max).
+        checkleq(Max, H).
 
 
 
@@ -56,13 +58,21 @@ max_list([H|T], Max) :-
 % Purpose: true if an author by the name AuthorName has written a book belonging to the genre named GenreName.
 
 author_of_genre(GenreName, AuthorName) :-
-        book(M, AuthorName, GenreName, R).
+        author(Aut,AuthorName),
+        genre(GN, GenreName),
+        book(_M, Aut, GN, _R).
 
 
 % Signature: longest_book(AuthorName, BookName)/2
 % Purpose: true if the longest book that an author by the name AuthorName has written is titled BookName.
+% TODO SHAAT KABALA
+%longest_book(AuthorName, BookName) :-
+%        author(Aut,AuthorName),
+%        book(BookName, Aut, _X3, N),
+%        findall(S, book(_X1,Aut, _X2,S),L),
+%        max_list(L, N).
 longest_book(AuthorName, BookName) :-
-        findall(S, book(_,AuthorName, _,S),L),
-        findall(N, book(BookName, AuthorName, _, N), L2),
-        L2= [First|_],
-        max_list(L, First).
+        author(Aut, AuthorName),
+        findall(Len, book(_Name, Aut, _X2, Len), L),
+        book(BookName, Aut, _GN, Booklen),
+        max_list(L, Booklen).
